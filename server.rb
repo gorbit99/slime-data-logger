@@ -3,6 +3,9 @@ require 'socket'
 ACCEL_SENSITIVITY = 16384.0
 GYRO_SENSITIVITY = 131.072
 
+G_TO_MS = 9.80665
+DPS_TO_RAD = Math::PI / 180
+
 def parse_imu_packet(data)
   accel = nil
   if data[1] != -32768
@@ -11,14 +14,14 @@ def parse_imu_packet(data)
       data[2] << 4 | ((data[10] & 0xf0) >> 4),
       data[3] << 4 | ((data[11] & 0xf0) >> 4),
     ]
-    accel.map!{|value| value / ACCEL_SENSITIVITY}
+    accel.map!{|value| value / ACCEL_SENSITIVITY * G_TO_MS}
   end
   gyro = [
     data[4] << 4 | (data[9] & 0x0f),
     data[5] << 4 | (data[10] & 0x0f),
     data[6] << 4 | (data[11] & 0x0f),
   ]
-  gyro.map!{|value| value / GYRO_SENSITIVITY}
+  gyro.map!{|value| value / GYRO_SENSITIVITY * DPS_TO_RAD}
 
   return [gyro, accel]
 end
