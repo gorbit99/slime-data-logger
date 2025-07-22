@@ -1,0 +1,25 @@
+menu "Logger Configuration"
+
+  config WIFI_SSID
+    string "Wi-Fi SSID"
+
+  config WIFI_PASS
+    string "Wi-Fi password"
+
+  config SERVER_IP
+    string "Server IP"
+
+  config SERVER_PORT
+    int "Server port"
+    default 42069
+    range 1 65536
+
+  config SDA_PIN
+    int "SDA pin"
+    range 1 255
+
+  config SCL_PIN
+    int "SDA pin"
+    range 1 255
+
+endmenu
